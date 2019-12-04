@@ -18,8 +18,8 @@ devtools::install_github("woodwards/octopus")
 
 * `ensnakeify()` converts strings to snake_case. Symbols are converted to underscore, but you can optionally convert them to text, by supplying a named vector such as `c("%" = "percent", "/" = "per", "@" = "at", "#" = "hashtag")`.
 
-* `autosnake()` converts dataframe names to snake_case using `ensnakeify()`.
+* `autosnake(df)` converts dataframe names to snake_case using `ensnakeify()`.
 
 * `excel_to_date()` converts Excel date numbers to Date.
 
-* `dotty()` quickly visualises dataframe contents using ``ggplot()`. 
+* `dotty(df)` quickly visualises dataframe contents using ``ggplot()`. 
