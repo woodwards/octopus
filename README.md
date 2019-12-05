@@ -14,12 +14,26 @@ devtools::install_github("woodwards/octopus")
 
 * `as_numeric()` is the same as `as.numeric` but suppressing the warnings.
 
-* `is_loaded()` checks whether a package is loaded.
+* `autosnake(df)` converts dataframe names to snake_case using `ensnakeify()`.
+
+* `despace()` removes factors, space and NA from a datafram prior to writing.
+
+* `dotty(df)` quickly visualises dataframe contents using ``ggplot()`. 
 
 * `ensnakeify()` converts strings to snake_case. Symbols are converted to underscore, but you can optionally convert them to text, by supplying a named vector such as `c("%" = "percent", "/" = "per", "@" = "at", "#" = "hashtag")`.
 
-* `autosnake(df)` converts dataframe names to snake_case using `ensnakeify()`.
-
 * `excel_to_date()` converts Excel date numbers to Date.
 
-* `dotty(df)` quickly visualises dataframe contents using ``ggplot()`. 
+* `fillgaps()` fills gaps in a vector with the first non-NA value.
+
+* `is_loaded()` checks whether a package is loaded.
+
+* `not_all_na()` is a helper function to identify dataframe columns that contain values.
+
+* `not_all_same()` is a helper function to identify dataframe columns that contain more than one value.
+
+* `summaree(df)` is a modification of `summary()` that gives more information on string columns.
+
+* `write_data(df)` writes a dataframe to a text file (but only if it has changed).
+
+
