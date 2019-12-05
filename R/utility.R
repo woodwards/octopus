@@ -228,3 +228,26 @@ write_data <- function(data, path, delim = "\t", silent = TRUE) {
     if (!silent) cat("Skip Writing:\n", path, "\n")
   }
 }
+
+#' Convert an object to a string.
+#'
+#' @param obj An object.
+#' @return A string.
+#' @examples
+#' data.frame(x = c(NA, "A string"), y = 1:2) %>% obj_to_str()
+#' @export
+obj_to_str <- function(obj){
+  paste(capture.output(dput(obj)), collapse=" ") # paste avoids line breaks
+}
+
+#' Convert a string (generated using obj_to_str) back to an object.
+#'
+#' @param str A string generated using obj_to_str().
+#' @return An object.
+#' @examples
+#' data.frame(x = c(NA, "A string"), y = 1:2) %>% obj_to_str() %>% str_to_obj()
+#' @export
+str_to_obj <- function(str){
+  eval(parse(text=str))
+}
+

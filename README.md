@@ -32,6 +32,10 @@ devtools::install_github("woodwards/octopus")
 
 * `not_all_same()` is a helper function to identify dataframe columns that contain more than one value.
 
+* `obj_to_str()` converts an object to a string.
+
+* `str_to_obj()` converts a string (generated using `obj_to_str()`) back to an object.
+
 * `summaree(df)` is a modification of `summary(df)` that gives more information on string columns.
 
 * `write_data(df)` writes a dataframe to a text file (but only if it has changed).
