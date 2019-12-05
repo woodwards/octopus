@@ -108,3 +108,123 @@ dotty <- function(df) { # analyse a dataframe, return results as a dataframe
     ggplot2::geom_point(mapping = ggplot2::aes(x = column, y = row, colour = type)) +
     ggplot2::scale_y_reverse()
 }
+
+#' Function to fill gaps with first available value.
+#'
+#' @param x A vector.
+#' @return A vector.
+#' @examples
+#' data.frame(x = c(1, 1, NA, 1, 1)) %>% dplyr::mutate(x = fillgaps(x))
+#' @export
+fillgaps <- function(x) {
+  if (!all(is.na(x))) {
+    f <- x[!is.na(x)][1]
+    x[is.na(x)] <- f
+  }
+  return(x)
+}
+
+#' Function to identify non-empty columns.
+#'
+#' @param x A vector.
+#' @return Logical.
+#' @examples
+#' data.frame(x = c(1, 1), y = c(NA, NA)) %>% dplyr::select_if(not_all_na)
+#' @export
+not_all_na <- function(x) !all(is.na(x))
+
+#' Function to identify non-constant columns (NA is treated as a unique value).
+#'
+#' @param x A vector.
+#' @return Logical.
+#' @examples
+#' data.frame(x = c(1, 1), y = c(1, NA)) %>% dplyr::select_if(not_all_same)
+#' @export
+not_all_same <- function(x) length(unique(x)) > 1
+
+#' Modificaton of summary() that reports strings as factors.
+#'
+#' @param df A dataframe.
+#' @return A summary.
+#' @examples
+#' summaree(data.frame(x = LETTERS, y = 1:26))
+#' @export
+summaree <- function(df) {
+  df %>%
+    dplyr::mutate_if(is.character, as.factor) %>%
+    summary()
+}
+
+#' Function to remove factors and spaces and NA from dataframe prior to writing.
+#'
+#' @param df A dataframe.
+#' @return A dataframe.
+#' @examples
+#' data.frame(x = c(NA, "A string"), y = 1:2) %>% despace()
+#' @export
+despace <- function(df) {
+  df %>% # new format
+    dplyr::mutate_all(as.character) %>%
+    dplyr::mutate_all(function(x) stringr::str_replace_all(x, "\\s+", "_")) %>%
+    dplyr::mutate_all(function(x) dplyr::if_else(!is.na(x), x, ""))
+}
+
+#' Function to write dataframe to a delimited file (but only if it has changed).
+#'
+#' @param data A dataframe.
+#' @param path A file path.
+#' @param delim A delimiter. Default is tab delimited.
+#' @param silent Logical.
+#' @return Nothing.
+#' @examples
+#' library(magrittr)
+#' data.frame(x = c(NA, "A string"), y = 1:2) %>% write_data("my_data.tsv")
+#' @export
+write_data <- function(data, path, delim = "\t", silent = TRUE) {
+  temppath <- stringr::str_replace(path, "\\....$", ".rds")
+  write_output_files <- TRUE
+  if (write_output_files) {
+
+    # check if already there
+    tryCatch(
+      expr = {
+        if (file.exists(temppath)){
+          tempdata <- readRDS(temppath)
+          already_there <- isTRUE(all_equal(data, tempdata))
+        } else {
+          already_there <- FALSE
+        }
+      },
+      error = function(err) {
+        if (!silent) cat("Error: Could not check:\n", temppath, "\n")
+        already_there <- TRUE
+      }
+    )
+
+    # else write data
+    if (!already_there){
+      tryCatch(
+        expr = {
+          if (!silent) cat("Writing:\n", path, "\n")
+          readr::write_delim(data, path, delim = delim)
+        },
+        error = function(err) {
+          cat("Error: Could not write to:\n", path, "\n")
+        }
+      )
+      tryCatch(
+        expr = {
+          saveRDS(data, temppath)
+        },
+        error = function(err) {
+          cat("Error: Could not write to:\n", temppath, "\n")
+        }
+      )
+    } else {
+      if (!silent) cat("Message: No change to:\n", path, "\n")
+    }
+
+  } else {
+    if (!silent) cat("Skip Writing:\n", path, "\n")
+  }
+}
