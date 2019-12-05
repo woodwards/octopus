@@ -10,7 +10,7 @@ devtools::install_github("woodwards/octopus")
 
 ### Functions
 
-* `%notin%` is a companion for `%in%`.
+* `%notin%` is a companion for `%in%`. 
 
 * `as_numeric()` is the same as `as.numeric` but suppressing the warnings.
 
