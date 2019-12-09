@@ -190,7 +190,7 @@ write_data <- function(data, path, delim = "\t", silent = TRUE) {
       expr = {
         if (file.exists(temppath)){
           tempdata <- readRDS(temppath)
-          already_there <- isTRUE(all_equal(data, tempdata))
+          already_there <- isTRUE(allequal(data, tempdata))
         } else {
           already_there <- FALSE
         }
@@ -257,9 +257,9 @@ str_to_obj <- function(str){
 #' @param y Another object.
 #' @return Logical.
 #' @examples
-#' all_equal(data.frame(y = 1:2), data.frame(y = c(2, 4)))
+#' allequal(data.frame(y = 1:2), data.frame(y = c(2, 4)))
 #' @export
-all_equal <- function(x, y){
+allequal <- function(x, y){
   isTRUE(all.equal(x, y))
 }
 

@@ -12,7 +12,7 @@ devtools::install_github("woodwards/octopus")
 
 * `%notin%` is a companion for `%in%`. 
 
-* `all_equal()` determines whether two objects are equal.
+* `allequal()` determines whether two objects are equal.
 
 * `as_numeric()` is the same as `as.numeric` but suppressing the warnings.
 
